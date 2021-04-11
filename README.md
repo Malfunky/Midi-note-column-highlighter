@@ -1,4 +1,4 @@
-#This is a feature I wish the Reaper development team will add in the future.
+#This script best serves demonstration purposes. This is a feature I wish the Reaper development team will add in the future.
 The option to highlight the notecolumn and maybe also the noterow?
 Many users are constantly duped by the visible gridlines not reflecting the grid settings...
 Highlighing the note column might solve that issue for some.
