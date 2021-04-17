@@ -4,3 +4,5 @@ Many users are constantly duped by the visible gridlines not reflecting the grid
 Highlighing the note column might solve that issue for some.
 This script now works with most settings ,except "dotted". 
 All though the script should work on larger grid sizes , its true benefit is highlighting the smaller notesizes that is not supported by visible grid lines
+
+WARNING : The script tracks mousemovement to calculate the pixel/grid ratio, so you have to move the mouse slightly ( 1/3 seconds?) for the script to adapt to new zoom settings.
