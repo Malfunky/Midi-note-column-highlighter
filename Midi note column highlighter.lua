@@ -11,6 +11,8 @@
 --Alot simpler algoritm. No table management. 
 --New update condition. Scrip less wobbly. 
 
+--5/1 -- BR_GetMouseCursorContext_MIDI removed. Cos it reads from midi chunk. Illegal!
+
 -- USER SETTINGS 
 Transparancy = 0.06
 Color = 0x0099A3B2 -- 0x00RRGGBB
@@ -38,7 +40,6 @@ end
 function main() 
   midiview = reaper.JS_Window_Find("midiview",false) 
   _, segment, details = reaper.BR_GetMouseCursorContext() 
-  _,  _,   noteRow,   ccLane, _,  _ = reaper.BR_GetMouseCursorContext_MIDI() 
   timepos = reaper.BR_GetMouseCursorContext_Position() 
   HORZ = {reaper.JS_Window_GetScrollInfo(midiview, "HORZ") } 
 
