@@ -1,4 +1,5 @@
 --USER DATA 
+-- WARNING THIS SCRIPT READS FROM MIDI CHUNK AND IS NOT REALLY USEFUL.
 customcolor = 0xDD0033 -- red
 transparancy = 0.1
 
