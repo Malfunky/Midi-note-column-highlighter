@@ -1,4 +1,5 @@
 -- This script highlights the notecoloum of your notesize 
+-- If you adjust gridsize relatively , this script will be very helpful.
 -- The script doesnt highlight triplet settings larger than 1 correctly.. But it will at least show you that your grid setting is high...
 
 -- Changelog
