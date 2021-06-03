@@ -15,8 +15,8 @@
 
 --5/1 -- BR_GetMouseCursorContext_MIDI removed. Cos it reads from midi chunk. Illegal! 
 
--- 6/3 -- Added very primitive pcall protection when loading miditake.
--- Fixed a snapping issue. 
+-- 6/3 -- Added very primitive pcall protection to prevent the script from crashing when cutting/gluing midi items.
+-- Smooth redraw when snap is off.
 
 -- USER SETTINGS 
 Transparancy = 0.06
