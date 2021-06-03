@@ -1,4 +1,5 @@
--- This script highlights the notecoloum of your notesize
+-- This script highlights the notecoloum of your notesize 
+-- The script doesnt highlight large triplet settings.. But it will at least show you that your grid setting is high...
 
 -- Changelog
 --4/24-21
@@ -11,7 +12,10 @@
 --Alot simpler algoritm. No table management. 
 --New update condition. Scrip less wobbly. 
 
---5/1 -- BR_GetMouseCursorContext_MIDI removed. Cos it reads from midi chunk. Illegal!
+--5/1 -- BR_GetMouseCursorContext_MIDI removed. Cos it reads from midi chunk. Illegal! 
+
+-- 6/3 -- Added very primitive pcall protection when loading miditake.
+-- Fixed a snapping issue. 
 
 -- USER SETTINGS 
 Transparancy = 0.06
@@ -49,8 +53,10 @@ function main()
      take = reaper.MIDIEditor_GetTake(hwnd)
      noteLen_ = noteLen or 0
      gridvalue_ = gridvalue or 0
-     swing_ = swing or 0
-     gridvalue,  swing,   noteLen = reaper.MIDI_GetGrid(take) 
+     swing_ = swing or 0 
+     pcall(function() 
+         gridvalue,  swing,   noteLen = reaper.MIDI_GetGrid(take)  
+       end )
      snap = reaper.MIDIEditor_GetSetting_int(hwnd,"snap_enabled") 
   end
 
@@ -60,7 +66,8 @@ function main()
           -- update conditions
        if gridvalue_~=gridvalue then redraw=true end
        if noteLen_~=noteLen then redraw=true end
-       if swing_~=swing then redraw=true end
+       if swing_~=swing then redraw=true end 
+       if snap == 0 then redraw=true end 
          --------------------------------------------- 
        QN = reaper.TimeMap2_timeToQN(0,timepos) 
        if QN >0 then 
@@ -75,6 +82,7 @@ function main()
            end
        end 
        width = (max_X - min_X)/(max_Qn - min_Qn)
+       --width = math.floor(width)
          -------------------------------------------
       -- ME_Leftmost_Qn =  max_Qn - max_X/width
       -- ME_QnPerPixel = (max_Qn - min_Qn)/(max_X - min_X) 
@@ -83,9 +91,8 @@ function main()
        NN_round_ = NN_round or 0
        NN_round = math.floor(NN) 
        if NN_round_~=NN_round then redraw = true end
-       NN_leftover = NN-NN_round 
- 
-
+       NN_leftover = NN-NN_round  
+     --  QN_1 = NN_round*gridvalue
      -- some crazy special case   --  grid : 1  triplet
     if gridvalue == 8/3 and swing==0 then 
       swing = 0.64 -- rs = 0.66 
@@ -109,7 +116,7 @@ function main()
           position_in_swing = (leftover-rs)/(1-rs) 
           NN_leftover = position_in_swing
         end 
-        if sone_ ~= sone then redraw = true end  -- stop using update!!
+        if sone_ ~= sone then redraw = true end   
     end   
   end 
     if gridvalue then 
@@ -128,7 +135,13 @@ function main()
   
   if gridvalue and timepos then 
     if gridvalue>=4 and swing~=0 then timepos = -1 end 
-    if gridvalue == 16/3 or gridvalue == 32/3 then timepos = -1 end
+
+   -- this if structure , is supposed to hide large settings that I cant manage. But it also undermines the purpose of the script, which is to let you see what the hell you are doing 
+   -- for example.  is your grid setting high or low?
+   --[[  if gridvalue == 16/3 or gridvalue == 32/3 or gridvalue == 64/3 or gridvalue == 128/3 then 
+       redraw=false 
+       reaper.JS_Composite_Unlink(midiview, bitmap) 
+    end ]]
     if  width then 
        box_x1 = x - NN_leftover*new_width
        if noteLen ~= 0 then 
@@ -143,9 +156,10 @@ function main()
        end 
        
        if snap==0 then box_x1=x end
-       box_x1 = round(box_x1) 
-       new_width = round(new_width)
-       note_length = round(note_length)
+       box_x1 = round(box_x1) --test
+       --new_width = round(new_width) 
+       new_width = round(new_width) --test
+       note_length = round(note_length) --test
        if redraw==true then 
          pcall( function() 
                   draw() 
