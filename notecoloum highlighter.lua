@@ -167,9 +167,6 @@ function main()
          end 
        end
     end 
-  
-    
-   
 
   if gridvalue and timepos then 
     if gridvalue>=4 and swing~=0 then timepos = -1 end 
@@ -212,6 +209,24 @@ function main()
   end 
   if segment ~= "notes" and segment~="cc_lane"  then  reaper.JS_Composite_Unlink(midiview, bitmap) end 
 
+  
+  H_zoom_ = H_zoom or 0
+  H_zoom2_ = H_zoom2 or 0 
+  H_scroll_ = H_scroll or 0
+
+  HORZ = {reaper.JS_Window_GetScrollInfo(midiview, "HORZ") } 
+  H_zoom = HORZ[3] 
+  H_zoom2 = HORZ[5]
+  H_scroll = HORZ[2] 
+  bpm_ = bpm or 0
+  bpm=reaper.TimeMap2_GetDividedBpmAtTime(0,timepos)
+ 
+
+  if  H_zoom~=H_zoom_ or H_scroll~=H_scroll_ or H_zoom2~=H_zoom2_ or bpm~=bpm_ then 
+     reaper.JS_Composite_Unlink(midiview, bitmap)   
+     X_,X,QN,QN_ = nil,nil,nil,nil 
+     redraw = false
+  end 
   end  
   reaper.defer(main)
 end 
